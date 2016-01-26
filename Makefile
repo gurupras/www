@@ -2,6 +2,7 @@ all: build | silent
 
 build:
 	@node index.js
+	@cp server.js build/index.js
 
 install:
 	@npm install
@@ -10,7 +11,8 @@ silent:
 	@:
 
 run: build
-	./node_modules/http-server/bin/http-server build
+	@cd build && node index
+#	./node_modules/http-server/bin/http-server build
 
 clean:
 	@rm -rf build 

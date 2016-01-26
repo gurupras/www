@@ -15,6 +15,8 @@
 
 		<link href="/assets/css/slides/deck.css" rel="stylesheet" />
 		<script src="/assets/js/slides/deck.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/assets/js/slideshare.js"></script>
 	</head>
 
 	<body class="article">
