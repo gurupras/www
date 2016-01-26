@@ -454,7 +454,7 @@ that use the API provided by core.
     string this will move to the slide with the specified id. If index is out
     of bounds or doesn't match a slide id the call is ignored.
     */
-    go: function(indexOrId) {
+    go: function(indexOrId, shouldTriggerEvents) {
       var beforeChangeEvent = $.Event(events.beforeChange);
       var index;
 
@@ -477,9 +477,11 @@ that use the API provided by core.
 
       /* Trigger beforeChange. If nothing prevents the change, trigger
       the slide change. */
-      $document.trigger(beforeChangeEvent, [currentIndex, index]);
+			if(shouldTriggerEvents) {
+				$document.trigger(beforeChangeEvent, [currentIndex, index]);
+			}
       if (!beforeChangeEvent.isDefaultPrevented()) {
-        $document.trigger(events.change, [currentIndex, index]);
+				$document.trigger(events.change, [currentIndex, index]);
         changeHash(currentIndex, index);
         currentIndex = index;
         updateStates();
@@ -493,7 +495,7 @@ that use the API provided by core.
     is ignored.
     */
     next: function() {
-      methods.go(currentIndex+1);
+      methods.go(currentIndex+1, true);
     },
 
     /*
@@ -503,7 +505,7 @@ that use the API provided by core.
     call is ignored.
     */
     prev: function() {
-      methods.go(currentIndex-1);
+      methods.go(currentIndex-1, true);
     },
 
     /*
