@@ -1,0 +1,15 @@
+.btn-login {
+  font-family: Courier New;
+  color: #1417c7;
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-login:hover {
+  font-weight: bold;
+  color: #20228c;
+  text-decoration: none;
+  border: none;
+}
+
