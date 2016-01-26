@@ -17,6 +17,8 @@
 		<script src="/assets/js/slides/deck.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/assets/js/slideshare.js"></script>
+		<!-- Auth0 lock script -->
+		<script src="//cdn.auth0.com/js/lock-8.2.min.js"></script>
 	</head>
 
 	<body class="article">

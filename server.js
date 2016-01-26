@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var jwt = require('express-jwt');
 
 
 app.get('/', function(req, res) {
@@ -18,16 +19,20 @@ var currentDeck = 0;
 
 function addNewConnection(socket) {
 	connectionCount++;
+	var userType = null;
 	if(connectionCount == 1) {
 		connections[socket.id] = {'admin': true};
+		userType = 'admin';
 		socket.emit('log-message', "You are admin");
 		console.log(socket.id + ": admin");
 	}
 	else {
 		connections[socket.id] = {'admin': false};
+		userType = 'guest';
 		socket.emit('log-message', "You are: guest");
 		console.log(socket.id + ": guest");
 	}
+	socket.emit('user-type', userType);
 }
 
 io.on('connection', function(socket) {
@@ -49,7 +54,8 @@ io.on('connection', function(socket) {
 		}
 	});
 	socket.on('query', function() {
-		socket.emit({'from': -1, 'to': currentDeck});
+		console.log(socket.id + ": query: resp=" + "-1 -> " + currentDeck);
+		socket.emit('update-deck', {'from': -1, 'to': currentDeck});
 	});
 });
 
