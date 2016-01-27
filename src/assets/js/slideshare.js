@@ -31,8 +31,33 @@ socket.on('log-message', function(msg) {
 
 var auth0Lock;
 
+function signin() {
+	auth0Lock.show({authParams: {
+		scope: 'openid offline_access'
+	}}, function(err, profile, token) {
+		if (err) {
+			// Error callback
+			alert('There was an error');
+		} else {
+			// Success callback
+
+			// Save the JWT token.
+			localStorage.setItem('userToken', token);
+			localStorage.setItem('userProfile', JSON.stringify(profile));
+			$('#btn-login').hide();
+			$('#btn-logout').attr('value', profile.email).show();
+		}
+	});
+}
+
+function signout() {
+	localStorage.removeItem('userToken');
+	localStorage.removeItem('userProfile');
+}
+
+
 $(document).bind('deck.init', function() {
-	auth0Lock = new Auth0Lock('ID', 'NAMESPACE');
+	auth0Lock = new Auth0Lock('AHf2pl5oLve5NegtSwpLcsrFEzzaFR0I', 'merrimac.auth0.com');
 	console.log("Created auth0lock");
 
 	if(userType === 'admin') {
@@ -53,7 +78,15 @@ $(document).bind('deck.init', function() {
 	$('#btn-sync').bind('click', function() {
 		socket.emit('query', '');
 	});
+
+	// Check for authentication
+	var profile = JSON.parse(localStorage.getItem('userProfile'));
+	if(profile) {
+		// User has authenticated earlier. Get new JWT if needed
+		console.log(JSON.stringify(profile));
+		$('#btn-login').hide();
+		$('#btn-logout').attr('value', profile.email).show();
+	}
 });
 
-var userProfile = null;
 

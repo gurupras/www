@@ -49,6 +49,7 @@
     "moment-timezone": "^0.4.1",
     "path": "^0.12.7",
     "socket.io": "^1.4.4",
+    "socketio-jwt": "^4.3.4",
     "underscore": "^1.8.3"
   }
 }

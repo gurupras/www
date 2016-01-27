@@ -19,28 +19,19 @@ the deck container.
     $('<input/>').addClass('btn-login').attr('type', 'submit').attr('value', 'Login').css('float', 'right').attr('id', 'btn-login')
     .on('click', function(e) {
       e.preventDefault();
-      auth0Lock.show(function(err, profile, token) {
-        if(err) {
-          alert('There was an error');
-        } else {
-          localStorage.setItem('userToken', token);
-          userProfile = profile;
-          $('#btn-login').hide();
-          $('#btn-logout').show();
-        }
-      });
+      signin();
     })
     .appendTo($.deck('getContainer'));
 
     $('<input/>').addClass('btn-login').attr('type', 'submit').attr('value', 'Logout').attr('id', 'btn-logout')
     .css('float', 'right')
     .css('display', 'none')
-    .on('click', function() {
-      localStorage.removeItem('userToken');
-      userProfile = null;
+    .on('click', function(e) {
+      e.preventDefault();
+      signout();
       $('#btn-logout').hide();
       $('#btn-login').show();
-    });
+    }).appendTo($.deck('getContainer'));
 
     $('<button/>').addClass('').attr('id', 'btn-sync').css('float', 'right').html('Sync')
     .on('click', function(e) {
