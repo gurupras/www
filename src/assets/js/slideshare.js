@@ -1,4 +1,4 @@
-var socket = io();
+var socket = null;
 
 var shouldSync = true;
 var userType = 'guest';
@@ -10,26 +10,46 @@ $(document).on('deck.change', function(event, from, to) {
 	return false;
 });
 
-socket.on('update-deck', function(msg) {
-	console.log('update-deck: ' + msg.from + ' -> ' + msg.to);
-	var to = msg.to;
-	if(shouldSync) {
-		$.deck('go', to, false);
-	}
-});
-
-socket.on('user-type', function(msg) {
-	userType = msg;
-	if(userType === 'admin') {
-		$('#btn-sync').hide();
-	}
-});
-
-socket.on('log-message', function(msg) {
-	console.log('Server sent: ' + msg);
-});
-
 var auth0Lock;
+
+function bindSocketEvents() {
+	socket.on('update-deck', function(msg) {
+		console.log('update-deck: ' + msg.from + ' -> ' + msg.to);
+		var to = msg.to;
+		if(shouldSync) {
+			$.deck('go', to, false);
+		}
+	});
+
+	socket.on('user-type', function(msg) {
+		console.log("User type: " + msg);
+		userType = msg;
+		if(userType === 'admin') {
+			$('#btn-sync').hide();
+		}
+	});
+
+	socket.on('log-message', function(msg) {
+		console.log('Server sent: ' + msg);
+	});
+}
+
+function initializeSocketIO() {
+	socket = io();
+	var profile = localStorage.getItem('userProfile');
+	var profileJson = JSON.parse(profile);
+	var userToken = localStorage.getItem('userToken');
+	socket.on('connect', function() {
+		socket.on('authenticated', function() {
+			// Add stuff to do immediately after authentication
+			socket.emit('auth0', profile);
+		});
+		socket.emit('authenticate', {'token': userToken});
+	});
+	// This socket has finished the authentication chain.
+	// Bind to slideshare events
+	bindSocketEvents();
+}
 
 function signin() {
 	auth0Lock.show({authParams: {
@@ -42,10 +62,16 @@ function signin() {
 			// Success callback
 
 			// Save the JWT token.
+			var profileJson = JSON.stringify(profile);
 			localStorage.setItem('userToken', token);
-			localStorage.setItem('userProfile', JSON.stringify(profile));
+			localStorage.setItem('userProfile', profileJson);
+
+			// Update buttons
 			$('#btn-login').hide();
 			$('#btn-logout').attr('value', profile.email).show();
+
+			// Initialize SocketIO
+			initializeSocketIO();
 		}
 	});
 }
@@ -82,10 +108,12 @@ $(document).bind('deck.init', function() {
 	// Check for authentication
 	var profile = JSON.parse(localStorage.getItem('userProfile'));
 	if(profile) {
-		// User has authenticated earlier. Get new JWT if needed
+		// TODO: User has authenticated earlier. Get new JWT if needed
 		console.log(JSON.stringify(profile));
 		$('#btn-login').hide();
 		$('#btn-logout').attr('value', profile.email).show();
+		// Initialize SocketIO
+		initializeSocketIO();
 	}
 });
 
