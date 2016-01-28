@@ -16,13 +16,15 @@ the deck container.
   var rootCounter;
 
   var maybeAddSnippet = function() {
-    $('<input/>').addClass('btn-login').attr('id', 'login-info')
+    $('<input/>').addClass('login-info').attr('id', 'login-info')
     .css('float', 'right')
     .attr('type', 'text')
     .attr('value', "Hit 'L' to login")
     .attr('readonly', true)
+		.attr('maxlength', '30')
+		.attr('aria-role', 'status')
     .prop('disabled', true)
-    .appendTo($.deck('getContainer'));
+    .appendTo($('#deck-header'));
 
     $('<button/>').addClass('').attr('id', 'btn-sync').css('float', 'right').html('Sync')
 		.css('display', 'none')
@@ -31,7 +33,7 @@ the deck container.
       // Disable button until user manually navigates
       $('#btn-sync').prop('disabled', true);
     })
-    .appendTo($.deck('getContainer'));
+    .appendTo($('#deck-header'));
   };
 
 

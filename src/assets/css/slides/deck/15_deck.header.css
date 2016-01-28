@@ -1,12 +1,14 @@
-.btn-login {
+.login-info {
+  background-color: rgba(255,255,255,0.8);
+  margin: 0 0 0 0;
   font-family: Courier New;
   color: #1417c7;
-  font-size: 14px;
+  font-size: inherit;
   text-decoration: none;
   border: none;
 }
 
-.btn-login:hover {
+.login-info:hover {
   font-weight: bold;
   color: #20228c;
   text-decoration: none;

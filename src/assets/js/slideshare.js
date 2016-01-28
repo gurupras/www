@@ -24,8 +24,8 @@ function bindSocketEvents() {
 	socket.on('user-type', function(msg) {
 		console.log("User type: " + msg);
 		userType = msg;
-		if(userType === 'admin') {
-			$('#btn-sync').hide();
+		if(userType !== 'admin') {
+			$('#btn-sync').show();
 		}
 	});
 
@@ -37,7 +37,6 @@ function bindSocketEvents() {
 function loginFieldUpdates() {
 	var userProfile = JSON.parse(localStorage.getItem('userProfile'));
 	$('#login-info').attr('value', userProfile.email);
-	$('#btn-sync').show();
 }
 
 function logoutFieldUpdates() {
@@ -98,11 +97,6 @@ function signout() {
 $(document).bind('deck.init', function() {
 	auth0Lock = new Auth0Lock('AHf2pl5oLve5NegtSwpLcsrFEzzaFR0I', 'merrimac.auth0.com');
 	console.log("Created auth0lock");
-
-	if(userType === 'admin') {
-		// Remove sync button and do not change 'shouldSync'
-		$('#btn-sync').hide();
-	}
 
 	$(document).bind('deck.beforeChange', function() {
 		// This event only occurs on:

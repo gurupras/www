@@ -23,6 +23,8 @@
 
 	<body class="article">
 		<div class="deck-container">
+			<div id='deck-header' data-progress-size=": spe.bottom(9, 16) ; left: (slide.left+10)+'px' ; height: (24*designRatio)+'px'" style="float: right; z-index:-1"></div>
+
 			{{{ contents }}}
 
 			<div data-progress-size=": spe.bottom(3, 20) ; left: slide.left+'px' ; height: (3*designRatio)+'px'" data-progress="width: pFull * slide.width" style="background: #191995; position: absolute; z-index:-1"></div>
