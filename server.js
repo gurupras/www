@@ -65,7 +65,7 @@ io.on('connection', jwt.authorize({
 	});
 
 	socket.on('auth0', function(msg) {
-		// User is sending across his info check and tell him if he's admin
+		// User is sending across his info. Check and tell him if he's admin
 		console.log("Received auth0:\n------------------------------------------\n" + msg + "\n------------------------------------------\n");
 		var profile = JSON.parse(msg);
 		var userType = 'guest';

@@ -13,6 +13,7 @@ $(document).on('deck.change', function(event, from, to) {
 var auth0Lock;
 
 function bindSocketEvents() {
+	// Bind to deck update
 	socket.on('update-deck', function(msg) {
 		console.log('update-deck: ' + msg.from + ' -> ' + msg.to);
 		var to = msg.to;
@@ -21,6 +22,8 @@ function bindSocketEvents() {
 		}
 	});
 
+	// Backend informs us of our user type.
+	// We get special privileges if we're the admin!
 	socket.on('user-type', function(msg) {
 		console.log("User type: " + msg);
 		userType = msg;
@@ -29,21 +32,26 @@ function bindSocketEvents() {
 		}
 	});
 
+	// Dummy event in case server wants to send us something to log
 	socket.on('log-message', function(msg) {
 		console.log('Server sent: ' + msg);
 	});
 }
 
+// Update fields upon successful login
 function loginFieldUpdates() {
 	var userProfile = JSON.parse(localStorage.getItem('userProfile'));
 	$('#login-info').attr('value', userProfile.email);
 }
 
+// Update fields upon logout
 function logoutFieldUpdates() {
 	$('#login-info').attr('value', "Hit 'L' to login");
 	$('#btn-sync').hide();
 }
 
+// Initialize Socket.IO
+// Look at server.js for the authentication flow
 function initializeSocketIO() {
 	socket = io();
 	var profile = localStorage.getItem('userProfile');
@@ -71,7 +79,7 @@ function signin() {
 		} else {
 			// Success callback
 
-			// Save the JWT token.
+			// Save the tokens
 			var profileString = JSON.stringify(profile);
 			var profileJson = JSON.parse(profileString);
 			localStorage.setItem('userToken', token);
@@ -95,6 +103,7 @@ function signout() {
 
 
 $(document).bind('deck.init', function() {
+	// Create Auth0 lock
 	auth0Lock = new Auth0Lock('AHf2pl5oLve5NegtSwpLcsrFEzzaFR0I', 'merrimac.auth0.com');
 	console.log("Created auth0lock");
 
@@ -109,6 +118,7 @@ $(document).bind('deck.init', function() {
 	});
 
 	$('#btn-sync').bind('click', function() {
+		// Query backend for current slide if the user clicks on this button
 		socket.emit('query', '');
 	});
 
@@ -124,5 +134,4 @@ $(document).bind('deck.init', function() {
 		initializeSocketIO();
 	}
 });
-
 
