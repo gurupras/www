@@ -16,36 +16,41 @@ the deck container.
   var rootCounter;
 
   var maybeAddSnippet = function() {
-    $('<input/>').addClass('btn-login').attr('type', 'submit').attr('value', 'Login').css('float', 'right').attr('id', 'btn-login')
-    .on('click', function(e) {
-      e.preventDefault();
-      signin();
-    })
+    $('<input/>').addClass('btn-login').attr('id', 'login-info')
+    .css('float', 'right')
+    .attr('type', 'text')
+    .attr('value', "Hit 'L' to login")
+    .attr('readonly', true)
+    .prop('disabled', true)
     .appendTo($.deck('getContainer'));
 
-    $('<input/>').addClass('btn-login').attr('type', 'submit').attr('value', 'Logout').attr('id', 'btn-logout')
-    .css('float', 'right')
-    .css('display', 'none')
-    .on('click', function(e) {
-      e.preventDefault();
-      signout();
-      $('#btn-logout').hide();
-      $('#btn-login').show();
-    }).appendTo($.deck('getContainer'));
-
     $('<button/>').addClass('').attr('id', 'btn-sync').css('float', 'right').html('Sync')
+		.css('display', 'none')
     .on('click', function(e) {
-      if($('#btn-sync').html() === 'Sync') {
-        shouldSync = true;
-        $('#btn-sync').prop('disabled', true);
-      } else {
-      }
+      shouldSync = true;
+      // Disable button until user manually navigates
+      $('#btn-sync').prop('disabled', true);
     })
     .appendTo($.deck('getContainer'));
   };
 
 
   var bindKeyEvents = function() {
+    $document.unbind('keydown.decklogin');
+    $document.bind('keydown.decklogin', function(event) {
+      var key = $.deck('getOptions').keys.login;
+      if ((event.which === key || $.inArray(event.which, key) > -1) && event.shiftKey) {
+        event.preventDefault();
+          if(localStorage.getItem('userToken') === null) {
+            // No tokens..probably not signed in
+            signin();
+        } else {
+          // XXX: People could mess with this by modifying JS.
+          // Nothing serious would go wrong though!
+          signout();
+        }
+      }
+    });
   };
 
   var populateDatalist = function() {
@@ -57,7 +62,30 @@ the deck container.
   var handleFormSubmit = function() {
   };
 
+  $.extend(true, $.deck.defaults, {
+    classes: {
+      header: 'deck-header'
+    },
+
+    selectors: {
+      headerSync: '#header-sync',
+    },
+
+    snippets: {
+    },
+
+    alert: {
+    },
+
+    keys: {
+      login: 76 // L (checks shift key)
+    },
+
+    countNested: true
+  });
+
   $document.bind('deck.init', function() {
+    bindKeyEvents();
     maybeAddSnippet();
   });
 })(jQuery);

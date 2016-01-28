@@ -34,6 +34,17 @@ function bindSocketEvents() {
 	});
 }
 
+function loginFieldUpdates() {
+	var userProfile = JSON.parse(localStorage.getItem('userProfile'));
+	$('#login-info').attr('value', userProfile.email);
+	$('#btn-sync').show();
+}
+
+function logoutFieldUpdates() {
+	$('#login-info').attr('value', "Hit 'L' to login");
+	$('#btn-sync').hide();
+}
+
 function initializeSocketIO() {
 	socket = io();
 	var profile = localStorage.getItem('userProfile');
@@ -62,13 +73,13 @@ function signin() {
 			// Success callback
 
 			// Save the JWT token.
-			var profileJson = JSON.stringify(profile);
+			var profileString = JSON.stringify(profile);
+			var profileJson = JSON.parse(profileString);
 			localStorage.setItem('userToken', token);
-			localStorage.setItem('userProfile', profileJson);
+			localStorage.setItem('userProfile', profileString);
 
-			// Update buttons
-			$('#btn-login').hide();
-			$('#btn-logout').attr('value', profile.email).show();
+			// Update fields
+			loginFieldUpdates();
 
 			// Initialize SocketIO
 			initializeSocketIO();
@@ -79,6 +90,8 @@ function signin() {
 function signout() {
 	localStorage.removeItem('userToken');
 	localStorage.removeItem('userProfile');
+	// Update fields
+	logoutFieldUpdates();
 }
 
 
@@ -110,8 +123,9 @@ $(document).bind('deck.init', function() {
 	if(profile) {
 		// TODO: User has authenticated earlier. Get new JWT if needed
 		console.log(JSON.stringify(profile));
-		$('#btn-login').hide();
-		$('#btn-logout').attr('value', profile.email).show();
+		// Update fields
+		loginFieldUpdates();
+
 		// Initialize SocketIO
 		initializeSocketIO();
 	}
