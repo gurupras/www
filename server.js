@@ -17,9 +17,20 @@ var connectionCount = 0;
 var connections = {};
 var currentDeck = 0;
 
-function addNewConnection(socket, isAdmin) {
+
+function extend(target) {
+	var sources = [].slice.call(arguments, 1);
+	sources.forEach(function (source) {
+		for (var prop in source) {
+			target[prop] = source[prop];
+		}
+	});
+	return target;
+}
+
+function addNewConnection(socket, profile, isAdmin) {
 	connectionCount++;
-	connections[socket.id] = {'admin' : isAdmin};
+	connections[socket.id] = extend({}, profile, {'admin' : isAdmin});
 }
 
 /**
@@ -58,15 +69,19 @@ io.on('connection', jwt.authorize({
 		console.log("Received auth0:\n------------------------------------------\n" + msg + "\n------------------------------------------\n");
 		var profile = JSON.parse(msg);
 		var userType = 'guest';
-		if(profile.user_id === 'auth0|56aa61f3fcd3a5454f1dfa05') {
+		if(profile.user_id === 'auth0|56a7efd82118f650176628a3') {
 			userType = 'admin';
 		}
-		addNewConnection(socket, userType === 'admin' ? true : false);
+		addNewConnection(socket, profile, userType === 'admin' ? true : false);
 		socket.emit('user-type', userType);
 	});
 
 	socket.on('deck-change', function(msg) {
-		console.log(socket.id + ": deck-change: " + msg.from + ' -> ' + msg.to);
+		if(!connections[socket.id]) {
+			console.log("warn: This socket has not yet been fully initialized");
+			return;
+		}
+		console.log(connections[socket.id].email + ": deck-change: " + msg.from + ' -> ' + msg.to);
 		if(connections[socket.id].admin === true) {
 			// Only admin should broadcast
 			console.log('admin deck-change: ' + msg.from + ' -> ' + msg.to);
