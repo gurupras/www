@@ -18,6 +18,14 @@ function bindSocketEvents() {
 		console.log('update-deck: ' + msg.from + ' -> ' + msg.to);
 		var to = msg.to;
 		if(shouldSync) {
+			// We're *about* to move slides.
+			// Since it's a given that we're navigating out of the current slide,
+			// it is completely safe to stop *all* animations - regardless of whether
+			// they're on the current slide or other slides.
+			// So..
+			$('iframe').each(function() {
+				$(this)[0].pause();
+			});
 			$.deck('go', to, false);
 		}
 	});
