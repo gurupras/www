@@ -477,11 +477,11 @@ that use the API provided by core.
 
       /* Trigger beforeChange. If nothing prevents the change, trigger
       the slide change. */
-			if(shouldTriggerEvents) {
-				$document.trigger(beforeChangeEvent, [currentIndex, index]);
-			}
+      if(shouldTriggerEvents) {
+        $document.trigger(beforeChangeEvent, [currentIndex, index]);
+      }
       if (!beforeChangeEvent.isDefaultPrevented()) {
-				$document.trigger(events.change, [currentIndex, index]);
+        $document.trigger(events.change, [currentIndex, index]);
         changeHash(currentIndex, index);
         currentIndex = index;
         updateStates();
