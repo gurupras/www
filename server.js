@@ -94,7 +94,7 @@ io.on('connection', jwt.authorize({
 	});
 	socket.on('query', function() {
 		// User is requesting info on the current slide
-		console.log(socket.id + ": query: resp=" + "-1 -> " + currentDeck);
+		console.log(connections[socket.id].email + ": query: resp=" + "-1 -> " + currentDeck);
 		socket.emit('update-deck', {'from': -1, 'to': currentDeck});
 	});
 });
