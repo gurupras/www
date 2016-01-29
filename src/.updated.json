@@ -1,9 +1,9 @@
 {
     "index.html": {
         "filename": "index.html",
-        "hash": "f461bb279ccb4fdbc5faa3f89b90f6ff",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
         "created": "2016-01-28T22:27:30.127Z",
-        "updated": "2016-01-29T16:52:40.719Z"
+        "updated": "2016-01-29T20:47:31.920Z"
     },
     "asst/0.html": {
         "filename": "asst/0.html",
@@ -13,8 +13,14 @@
     },
     "slides/intro.html": {
         "filename": "slides/intro.html",
-        "hash": "bf520f210f60b173b89d7a6e39e754e8",
+        "hash": "f4d54802cfedc130a77b407fe0859998",
         "created": "2016-01-28T22:27:30.127Z",
-        "updated": "2016-01-28T22:27:30.127Z"
+        "updated": "2016-01-29T20:47:31.920Z"
+    },
+    "slides/processes.html": {
+        "filename": "slides/processes.html",
+        "hash": "8c67a88713e00fc2679dac54a3130b95",
+        "created": "2016-01-29T20:47:31.920Z",
+        "updated": "2016-01-29T20:47:31.920Z"
     }
 }

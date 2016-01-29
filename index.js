@@ -12,6 +12,7 @@ var metalsmith = require('metalsmith'),
     lessjavascript = require('./lib/lessjavascript.js'),
     concat = require('metalsmith-concat'),
     highlight = require('metalsmith-highlight'),
+    beautify = require('metalsmith-beautify'),
     spellcheck = require('metalsmith-spellcheck'),
     formatcheck = require('metalsmith-formatcheck'),
     linkcheck = require('metalsmith-linkcheck');
@@ -33,7 +34,8 @@ metalsmith(__dirname)
     {pattern: slides_pattern, metadata: {'slides': true, 'layout': 'slides/slides.adoc'}},
 	]))
   .use(layouts({
-    engine: 'handlebars'
+    engine: 'handlebars',
+		pattern: slides_pattern
   }))
   .use(filemetadata([
     {pattern: slides_pattern, metadata: {'slides': true, 'layout': 'slides/slides.hbt'}},
@@ -65,7 +67,7 @@ metalsmith(__dirname)
     output: 'assets/js/slides/deck.js'
   }))
   .use(highlight())
-  /*
+	.use(beautify())
   .use(spellcheck({ dicFile: 'dicts/en_US.dic',
                     affFile: 'dicts/en_US.aff',
                     exceptionFile: 'dicts/spelling_exceptions.json',
@@ -74,7 +76,6 @@ metalsmith(__dirname)
                     verbose: true}))
   .use(formatcheck({ verbose: true , checkedPart: "div#content", failWithoutNetwork: false }))
   .use(linkcheck({ verbose: true , failWithoutNetwork: false }))
-  */
   .clean(true)
   .build(function throwErr (err) { 
     if (err) {
