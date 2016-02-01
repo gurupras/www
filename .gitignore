@@ -3,3 +3,8 @@
 /node_modules/
 /build/
 /env
+
+# We do not want auth0 secrets to propagate into git! So..
+/config
+
+

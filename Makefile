@@ -1,5 +1,10 @@
 all: build | silent
 
+config_test:
+	@if [ ! -f config/default.json ]; then mkdir -p config; cp .config_template config/default.json; echo "'config/default.json' did not exist..created! Please edit and re-run make!"; exit 1; fi
+
+config: config_test
+	@cp -R config build/
 build:
 	@node index.js
 	@cp server.js build/server.js
@@ -10,7 +15,7 @@ install:
 silent:
 	@:
 
-run: build
+run: build config
 	@cd build && node server
 
 clean:

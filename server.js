@@ -3,7 +3,10 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jwt = require('socketio-jwt');
+var config = require('config');
 
+var client_secret = config.get('client_secret');
+var admin_id = config.get('admin_id');
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
@@ -54,7 +57,7 @@ function addNewConnection(socket, profile, isAdmin) {
  */
 
 io.on('connection', jwt.authorize({
-	secret: Buffer('jvU_-jsvjKmfXyuoTlNeJe-35EZm8ml51-dY8ueG8dfA8O8D_P-Uu3l29464JDMi', 'base64'),
+	secret: Buffer(client_secret, 'base64'),
 	timeout: 15000 // 15 seconds to send the authentication message
 })).on('authenticated', function(socket) {
 	console.log('A user connected');
@@ -69,7 +72,7 @@ io.on('connection', jwt.authorize({
 		console.log("Received auth0:\n------------------------------------------\n" + msg + "\n------------------------------------------\n");
 		var profile = JSON.parse(msg);
 		var userType = 'guest';
-		if(profile.user_id === 'auth0|56a7efd82118f650176628a3') {
+		if(profile.user_id === admin_id) {
 			userType = 'admin';
 		}
 		addNewConnection(socket, profile, userType === 'admin' ? true : false);
