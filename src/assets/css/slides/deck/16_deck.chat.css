@@ -1,0 +1,47 @@
+#chat-messages-div {
+	height: 90%;
+	width: 100%;
+}
+
+#chat-messages {
+	list-style: outside disc;
+}
+
+/* This CSS is heavily influenced by code present here:
+ * http://jsfiddle.net/mblase75/TJELt/
+ */
+
+.chat-message-li {
+	position: relative;
+	display: block;
+	margin: 1px 0px;
+	text-align: left;
+	line-height: 1em;
+}
+
+.chat-message-div {
+	height: 100%;
+	margin: 0px;
+}
+
+.img-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 30px;
+	margin: 0px 0px;
+	padding: 5px;
+}
+
+.chat-message-li p {
+	margin-left: 35px;
+	font: 12px Helvetica, Verdana, sans-serif;
+	text-align: left;
+	word-wrap: break-all;
+}
+
+.chat-message-li:hover {
+	background: rgba(60,60,60,0.5);
+}
+

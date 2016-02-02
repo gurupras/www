@@ -100,6 +100,31 @@ io.on('connection', jwt.authorize({
 		console.log(connections[socket.id].email + ": query: resp=" + "-1 -> " + currentDeck);
 		socket.emit('update-deck', {'from': -1, 'to': currentDeck});
 	});
+
+	socket.on('chat-message', function(json) {
+		var backendUserId = connections[socket.id].email;
+		var clientUserId = json.email;
+		var message;
+		// Validate that this client has authorization to post a message
+		if(backendUserId !== clientUserId) {
+			if(!clientUserId) {
+				// Either logged out, or never logged in
+				console.log("Client requesting to post: '" + json.message + "' when he is not logged in");
+				message = {'name' : 'ops-class.org', 'message' : 'Please log in to use chat', 'color' : '#D60420'};
+				socket.emit('chat-message', message);
+			}
+			else {
+				// Client has an ID but it doesn't match what the server has stored for this client
+				console.log('WARNING: Client ID != Server ID (' + clientUserId + ' != ' + backendUserId + ')');
+			}
+		}
+		else {
+			// Broadcast it
+			console.log(connections[socket.id].email + ": " + json.message);
+			message = {'name' : json.nickname, 'message' : json.message};
+			io.emit('chat-message', message);
+		}
+	});
 });
 
 

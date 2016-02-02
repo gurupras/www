@@ -25,12 +25,9 @@ Guru
   var rootCounter;
 
   var maybeAddSnippet = function() {
-    $('<input/>').addClass('login-info').attr('id', 'login-info')
+    $('<div/>').addClass('login-info').attr('id', 'login-info')
     .css('float', 'right')
-    .attr('type', 'text')
-    .attr('value', "Hit 'L' to login")
-    .attr('readonly', true)
-    .attr('maxlength', '30')
+    .text("Hit 'L' to login")
     .attr('aria-role', 'status')
     .prop('disabled', true)
     .appendTo($('#deck-header'));
@@ -68,6 +65,62 @@ Guru
     });
   };
 
+  var bindRescale = function() {
+    $('#deck-header').on('deck.custom.rescale', scaleDeck);
+  };
+
+  var scaleDeck = function() {
+      var opts = $.deck('getOptions');
+      var addMarginX = opts.headerDesign.fitMarginX * 2;
+      var addMarginY = opts.headerDesign.fitMarginY * 2;
+      var fitMode = opts.headerDesign.fitMode;
+      var sdw = opts.headerDesign.designWidth;
+      var sdh = opts.headerDesign.designHeight;
+      var $container = $.deck('getContainer');
+      var scaleX = $container.innerWidth() / (sdw+addMarginX);
+      var scaleY = $container.innerHeight() / (sdh+addMarginY);
+      var scale = scaleX < scaleY ? scaleX : scaleY;
+      var $header = $('#deck-header');
+
+      /*
+      $header.css('width', sdw);
+      $header.css('height', sdh);
+      $.each('Webkit Moz O ms Khtml'.split(' '), function(i, prefix) {
+        if (scale == 1) {
+            $container.css(prefix + 'Transform', '');
+        } else {
+            // ok align right/bottom
+            console.log('scale: ' + scale);
+            console.log('innerWidth: ' + $container.innerWidth());
+            console.log('innerHeight: ' + $container.innerHeight());
+            console.log('sdw: ' + sdw);
+            console.log('sdh: ' + sdh);
+            console.log('addMarginX: ' + addMarginX);
+            console.log('addMarginY: ' + addMarginY);
+            var translate = ($container.innerWidth()/scale - sdw - addMarginX/2)+'px,'+($container.innerHeight()/scale - sdh - addMarginY/2)+'px)';
+            console.log('translate('+translate);
+            $header.css(prefix + 'Transform', 'translate(-50%,-50%) scale(' + scale + ' , ' + scale + ') translate(50%, 50%) translate('+translate);
+        }
+      });
+      */
+
+      var slide0 = $.deck('getSlides')[0][0];
+      var slideRect = slide0.getBoundingClientRect();
+      /**
+       * We know the slide is centered. Therefore, there is equal gap on either side.
+       * So
+       *     container.innerWidth() = slideRect.right + slideRect.x
+       * where
+       *     slideRect.right = slideRect.x + slideRect.width
+       *     => container.innerWidth() = 2*slideRect.x + slideRect.width
+       */
+      $header.css('position', 'absolute')
+      .css('top', '0')
+      .css('left', slideRect.right + 'px')
+      .css('width', (slideRect.x - 10) + 'px')
+      .css('height', (slideRect.height - 50) + 'px');
+  };
+
   var populateDatalist = function() {
   };
 
@@ -86,6 +139,15 @@ Guru
       headerSync: '#header-sync',
     },
 
+    headerDesign: {
+      designWidth: 200,
+      designHeight: 580,
+      fitMode: "center middle",
+      fitMarginX: 0,
+      fitMarginY: 0,
+      scaleDebounce: 200
+    },
+
     snippets: {
     },
 
@@ -93,7 +155,7 @@ Guru
     },
 
     keys: {
-			login: 76 // L (XXX: checks shift key)
+      login: 76 // L (XXX: checks shift key)
     },
 
     countNested: true
@@ -101,6 +163,7 @@ Guru
 
   $document.bind('deck.init', function() {
     bindKeyEvents();
+    bindRescale();
     maybeAddSnippet();
   });
 })(jQuery);

@@ -44,17 +44,52 @@ function bindSocketEvents() {
 	socket.on('log-message', function(msg) {
 		console.log('Server sent: ' + msg);
 	});
+
+	// Chat message from server
+	socket.on('chat-message', function(json) {
+		updateChat(json);
+	});
 }
+
+function updateChat(json) {
+		var user = json.name;
+		var msg = json.message;
+		var text = user + ': ' + msg;
+		var li = $('<li/>').addClass('chat-message-li');
+
+		var div = $('<div/>').addClass('chat-message-div');
+		div.appendTo(li);
+
+		var imgWrap = $('<div/>').addClass('img-wrap');
+		imgWrap.appendTo(div);
+
+		var img = $('<img/>');
+		img.attr('src', '/static/test.img');
+		img.appendTo(imgWrap);
+
+		var p = $('<p/>');
+		// Find length of text and compute number of lines
+		// We need this to set line-height
+		var lines = text.length / 30;
+		p.text(text);
+		p.appendTo(div);
+
+		if(json.color) {
+			p.css('color', json.color);
+		}
+		li.appendTo($('#chat-messages'));
+}
+
 
 // Update fields upon successful login
 function loginFieldUpdates() {
 	var userProfile = JSON.parse(localStorage.getItem('userProfile'));
-	$('#login-info').attr('value', userProfile.email);
+	$('#login-info').text(userProfile.email);
 }
 
 // Update fields upon logout
 function logoutFieldUpdates() {
-	$('#login-info').attr('value', "Hit 'L' to login");
+	$('#login-info').text("Hit 'L' to login");
 	$('#btn-sync').hide();
 }
 
@@ -69,12 +104,15 @@ function initializeSocketIO() {
 		socket.on('authenticated', function() {
 			// Add stuff to do immediately after authentication
 			socket.emit('auth0', profile);
+			// This socket has finished the authentication chain.
+			// Bind to slideshare events
+			bindSocketEvents();
+
+			// Trigger socket.io.initialized
+			$(document).trigger('socket.io.initialized');
 		});
 		socket.emit('authenticate', {'token': userToken});
 	});
-	// This socket has finished the authentication chain.
-	// Bind to slideshare events
-	bindSocketEvents();
 }
 
 function signin() {
@@ -109,6 +147,35 @@ function signout() {
 	logoutFieldUpdates();
 }
 
+function initializeChat() {
+	$('#chat-type-box').keydown(function(e) {
+		var code = e.which;
+		if(code == 13 && !e.shiftKey) {
+			var profile = JSON.parse(localStorage.getItem('userProfile'));
+			var message = $('#chat-type-box').val();
+			var messageJson = $.extend({}, profile, {'message' : message});
+			console.log("Requesting server to post message: " + message);
+			$('#chat-type-box').val('');
+			if(socket) {
+				socket.emit('chat-message', messageJson);
+			}
+			else {
+				if(!socket) {
+					var json = {
+						'name' : 'ops-class.org',
+						'message' : 'Please login to use chat',
+						'color' : '#D60420'
+					};
+					updateChat(json);
+					return;
+				}
+			}
+		}
+	});
+}
+
+// Initialize chat on socket.io.initialized
+window.onload = initializeChat;
 
 $(document).bind('deck.init', function() {
 	// Create Auth0 lock
@@ -140,6 +207,7 @@ $(document).bind('deck.init', function() {
 
 		// Initialize SocketIO
 		initializeSocketIO();
+
 	}
 });
 

@@ -1,7 +1,7 @@
 all: build | silent
 
 config_test:
-	@if [ ! -f config/default.json ]; then mkdir -p config; cp .config_template config/default.json; echo "'config/default.json' did not exist..created! Please edit and re-run make!"; exit 1; fi
+	@if [ ! -f config/default.json ]; then mkdir -p config; cp .default.json config/default.json; echo "'config/default.json' did not exist..created! Please edit and re-run make!"; exit 1; fi
 
 config: config_test
 	@cp -R config build/
