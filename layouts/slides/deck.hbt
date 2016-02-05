@@ -15,11 +15,18 @@
 
 <link href="/css/slides/deck.css" rel="stylesheet" />
 <script src="/js/slides/deck.js"></script>
+<!-- Socket.IO -->
+<script src="/socket.io/socket.io.js"></script>
+<!-- Slide sharing -->
+<script src="/js/slideshare.js"></script>
+<!-- Auth0 lock script -->
+<script src="//cdn.auth0.com/js/lock-8.2.min.js"></script>
 </head>
 
 <body>
+<div id='deck-header'></div>
 <div id="content">
-	<div class="deck-container">
+	<div class="deck-container" style="z-index: -3">
 		{{{ contents }}}
 
 		<div data-progress-size=": spe.bottom(3, 20) ; left: slide.left+'px' ; height: (3*designRatio)+'px'" data-progress="width: pFull * slide.width" style="background: #191995; position: absolute; z-index:-1"></div>

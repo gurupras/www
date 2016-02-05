@@ -1,0 +1,68 @@
+{
+    "index.html": {
+        "filename": "index.html",
+        "hash": "0b11c1b60a3fee53793819d598318a52",
+        "created": "2016-01-28T22:27:30.127Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "asst/0.html": {
+        "filename": "asst/0.html",
+        "hash": "36ebaf833ba288e11d0bc8575dc362d5",
+        "created": "2016-01-28T22:27:30.127Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/intro.html": {
+        "filename": "slides/intro.html",
+        "hash": "6ae5a458d41e6f3aa3be67db502dbaf0",
+        "created": "2016-01-28T22:27:30.127Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/processes.html": {
+        "filename": "slides/processes.html",
+        "hash": "979636c04106165e519aad55620357fd",
+        "created": "2016-01-29T20:47:31.920Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "asst/1.html": {
+        "filename": "asst/1.html",
+        "hash": "6a188a033d932bcfc885e2ff242f7af1",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "exams/index.html": {
+        "filename": "exams/index.html",
+        "hash": "98e92056b7f4d48e3f58df1256987057",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/forkandfilehandles.html": {
+        "filename": "slides/forkandfilehandles.html",
+        "hash": "7ec845fed0b8e30c102c3e8f6ba90307",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/forksynch.html": {
+        "filename": "slides/forksynch.html",
+        "hash": "6e9d21972ba00272ad55ad84b3869887",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/index.html": {
+        "filename": "slides/index.html",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "slides/synchprimitives.html": {
+        "filename": "slides/synchprimitives.html",
+        "hash": "a92ee271897eaaeff2c96621775e9504",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    },
+    "courses/buffalo/CSE421_Spring2016.html": {
+        "filename": "courses/buffalo/CSE421_Spring2016.html",
+        "hash": "dda6c713283d60c3093a39466cfbb15c",
+        "created": "2016-02-05T17:49:33.904Z",
+        "updated": "2016-02-05T17:49:33.904Z"
+    }
+}

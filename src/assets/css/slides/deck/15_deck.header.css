@@ -1,0 +1,20 @@
+#deck-header {
+	margin: 0px 10px 0px 0px;
+	float: right;
+	z-index: 3;
+};
+
+.login-info {
+	float: right;
+	margin: 0 0 0 0;
+	font-family: "Palatino";
+	color: #1417c7;
+	text-decoration: none;
+	border: none;
+}
+
+.login-info:hover {
+	font-weight: bold;
+	color: #20228c;
+}
+

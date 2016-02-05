@@ -42,6 +42,9 @@
             }
         });
         $.each(rootSlides, function(i, $slide) {
+            if(i == 1) {
+                $('#deck-header').trigger('deck.custom.rescale');
+            }
             $slide.css('width', sdw);
             $slide.css('height', sdh);
             $.each('Webkit Moz O ms Khtml'.split(' '), function(i, prefix) {
@@ -64,9 +67,8 @@
                 }
             });
         });
-        
-    }
-    
+    };
+
     /*
       Extends defaults/options.
       
