@@ -15,6 +15,7 @@ app.get('/', function(req, res) {
 
 app.use('/assets', express.static('assets'));
 app.use('/slides', express.static('slides'));
+app.use('/fonts', express.static('fonts'));
 app.use('/css', express.static('css'));
 app.use('/img', express.static('img'));
 app.use('/js', express.static('js'));
@@ -125,7 +126,11 @@ io.on('connection', jwt.authorize({
 		else {
 			// Broadcast it
 			console.log(connections[socket.id].email + ": " + json.message);
-			message = {'name' : json.nickname, 'message' : json.message};
+			message = {
+				'name' : json.nickname,
+				'message' : json.message,
+				'email' : json.email
+			};
 			io.emit('chat-message', message);
 		}
 	});
