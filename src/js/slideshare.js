@@ -64,7 +64,10 @@ function updateChat(json) {
 		imgWrap.appendTo(div);
 
 		var img = $('<img/>');
-		img.attr('src', '/static/test.img');
+		// FIXME: The size here is hard-coded. It shouldn't be. It should be
+		// obtained from the CSS..if that's even possible.
+		img.attr('src', window.location.protocol + '//' + 'gravatar.com/avatar/' +
+				md5(json.email) + '?d=identicon&s=30');
 		img.appendTo(imgWrap);
 
 		var p = $('<p/>');
@@ -84,7 +87,7 @@ function updateChat(json) {
 // Update fields upon successful login
 function loginFieldUpdates() {
 	var userProfile = JSON.parse(localStorage.getItem('userProfile'));
-	$('#login-info').text(userProfile.email);
+	$('#login-info').text(userProfile.nickname);
 }
 
 // Update fields upon logout

@@ -18,6 +18,7 @@
 <!-- Socket.IO -->
 <script src="/socket.io/socket.io.js"></script>
 <!-- Slide sharing -->
+<script src="/js/md5.js"></script>
 <script src="/js/slideshare.js"></script>
 <!-- Auth0 lock script -->
 <script src="//cdn.auth0.com/js/lock-8.2.min.js"></script>
