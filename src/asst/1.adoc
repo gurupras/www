@@ -1,5 +1,9 @@
 ---
 title: "Synchronization"
+spelling_exceptions:
+  - Buffalonians
+  - Hoare
+  - unflummoxable
 ---
 :sectnums:
 
@@ -9,9 +13,9 @@ title: "Synchronization"
 In ASST1 you will implement synchronization primitives for
 OS/161 and use them to solve several synchronization problems.
 
-Once you have ASST1 you should have a fairly solid grasp of the pitfalls of
-concurrent programming and--more importantly--how to avoid those pitfalls in
-the code you write during the rest of the semester.
+Once you complete ASST1 you should have a fairly solid grasp of the pitfalls
+of concurrent programming and--more importantly--how to avoid those pitfalls
+in the code you write during the rest of the semester.
   
 To complete this assignment you will need to be familiar with the OS/161
 thread code. The thread system provides interrupts, control functions,
@@ -31,7 +35,7 @@ and applying the correct synchronization primitive.
 
 === Collaboration Guidelines
 
-ASST1 is your first chance to right real kernel code. Here are the guidelines
+ASST1 is your first chance to write real kernel code. Here are the guidelines
 for how to work together and work with your partner (if you have one):
 
 TIP: Pair programming to complete the ASST1 implementation tasks is *strongly
@@ -92,10 +96,10 @@ code on the left does. The click on the right side for the much better
 solution. Note that with appropriately named variables no commentary is
 needed for this very familiar piece of code.
 
-[cols="2"]
-|===
+++++
+<div class="col-md-6">
+++++
 
-a|
 [source,c]
 ----
 struct a { 
@@ -118,7 +122,11 @@ void e() {
 }
 ----
 
-a|
+++++
+</div>
+<div class="col-md-6">
+++++
+
 [source,c,role='showonclick']
 ----
 struct item { 
@@ -141,7 +149,10 @@ void reverse_list() {
 }
 ----
 
-|===
+++++
+</div>
+<div style="clear:both;"></div>
+++++
 
 === Just a Few Tips
 
@@ -181,7 +192,7 @@ solutions for the ASST1 synchronization problems described below.
 
 This framework consists of:
 
-. `kern/synchprobs/{stoplight.c,whalemating.c}`: these files are where you
+. `kern/synchprobs/*`: these files are where you
 will implement your solutions to the synchronization problems.
 
 . `kern/tests/synchprobs.c`: this file contains driver code
@@ -197,7 +208,7 @@ ASST1. Once you do this you should notice two new menu options under the
 tests menu.
 
 Finally, to successfully run the ASST1 tests you will need to configure your
-kernel to use a large amount of memory. We suggest the maximum of 16M. This
+kernel to use a large amount of memory. We suggest the maximum of 16 MB. This
 is because your kernel currently leaks memory allocations that are larger
 than a page, and that includes all 4K thread stacks. So you will find that
 even if you correctly allocate and deallocate memory in your synchronization
@@ -357,7 +368,7 @@ conforming to the interface that we have provided.
 
 Unlike locks and condition variables, where we have provided you with a test
 suite, we are leaving it to you to develop a test that exercises your
-reader-writer locks. You will want to edit `kern/startup/menu.c` to allow
+reader-writer locks. You will want to edit `kern/main/menu.c` to allow
 yourself to run your test as `sy5` from the kernel menu or command line. We
 have our own reader-writer test that we will use to test and grade your
 implementation.
@@ -382,7 +393,7 @@ fairly straightforward synchronization problems.
 	
 We have provided you with basic driver code in `kern/tests/synchprobs.c` that
 starts a predefined number of threads which call functions in
-`kern/synchprobs/{whalemating.c,stoplight.c}`. You are responsible for
+`{whalemating.c,stoplight.c}`. You are responsible for
 implementing those functions which determine what those threads do. You
 can--and should--make changes to the driver code in `synchprobs.c`, but note
 that this file will be replaced by the drivers we cook up for testing. Also
@@ -401,14 +412,16 @@ reader-writer locks. However, one way may be more straightforward than
 another and so you should put some thought into choosing the correct
 primitives.
 
-=== The Classic CS161 Whale Mating Problem
+=== The Classic http://www.eecs.harvard.edu/~cs161/[CS161] Whale Mating Problem
 
 You have been hired by the New England Aquarium's research division to help
 find a way to increase the whale population. Because there are not enough of
 them, the whales are having synchronization problems in finding a mate. The
 trick is that in order to have children, three whales are needed; one male,
 one female, and one to play matchmaker--literally, to push the other two
-whales together.
+whales together footnote:[
+https://en.wikipedia.org/wiki/Panda_pornography[Pandas actually have this
+problem...]].
 
 Your job is to write the three procedures `male()`, `female()`, and
 `matchmaker()`. Each whale is represented by a separate thread. A male whale
@@ -417,12 +430,13 @@ similarly, a female whale must wait until a male whale and matchmaker are
 present. Once all three are present, the magic happens and then all three
 return.
 
-Each whale thread should call the appropriate `_start()` function when it
-begins mating or matchmaking and the appropriate `_end()` function when
-mating or matchmaking completes. These functions are part of the problem
+Each whale thread should call the appropriate
+`{male,female,matchmaker}_start()` function when it begins mating or
+matchmaking and the appropriate `{male,female,matchmaker}_end()` function
+when mating or matchmaking completes. These functions are part of the problem
 driver in `synchprobs.c` and you are welcome to change them, but again we
 will install and use our own versions for testing. We have provided stub code
-for the whalemating problem that you should use in `whalemating.c`.
+for the whale mating problem that you should use in `whalemating.c`.
 
 The test driver in `synchprobs.c` forks thirty threads, and has ten of them
 invoke `male()`, ten of them invoke `female()`, and ten of them invoke
@@ -456,51 +470,8 @@ approach the intersection from one of four _directions_, also numbered
 from direction X enters the intersection in quadrant X.
 
 ++++
-<div style="width:480px;height:480px;margin-left:auto;margin-right:auto;margin-top:10px;margin-bottom:10px;">
-
-	<div style="float:left;width:159px;height:159px;border-right:1px solid black;border-bottom:1px solid black;"></div>
-	<div style="float:left;width:78px;height:160px;text-align:center;font-size:40px;font-weight:bolder;border-right:2px dashed black;padding-top:40px;">
-		0<br />&darr;
-	</div>
-	<div style="float:left;width:80px;height:160px;"></div>
-	<div style="width:159px;height:159px;float:left;border-left:1px solid black;border-bottom:1px solid black;"></div>
-
-	<div style="clear:both;"></div>
-
-	<div style="float:left;width:159px;height:78px;border-bottom:2px dashed black;"></div>
-	<div style="float:left;width:78px;height:78px;border-right:2px dashed black;border-bottom:2px dashed black">
-		<div style="text-align:center;line-height:78px;font-size:40px;font-weight:bolder">0</div>
-	</div>
-	<div style="float:left;width:80px;height:78px;border-bottom:2px dashed black">
-		<div style="text-align:center;line-height:78px;font-size:40px;font-weight:bolder">1</div>
-	</div>
-	<div style="width:160px;height:78px;border-bottom:2px dashed black;float:left;">
-		<div style="font-size:40px;line-height:78px;font-weight:bolder;">&larr; 1</div>
-	</div>
-
-	<div style="clear:both;"></div>
-	
-	<div style="width:159px;height:80px;float:left;">
-		<div style="text-align:right;font-size:40px;line-height:78px;font-weight:bolder;">3 &rarr;</div>
-	</div>
-	<div style="float:left;width:78px;height:80px;border-right:2px dashed black">
-		<div style="text-align:center;line-height:78px;font-size:40px;font-weight:bolder">3</div>
-	</div>
-	<div style="float:left;width:80px;height:80px;">
-		<div style="text-align:center;line-height:78px;font-size:40px;font-weight:bolder">2</div>
-	</div>
-	<div style="float:left;width:160px;height:80px"></div>
-
-	<div style="clear:both;"></div>
-	
-	<div style="float:left;width:159px;height:159px;border-right:1px solid black;border-top:1px solid black;"></div>
-	<div style="float:left;width:78px;height:160px;border-right:2px dashed black;padding-top:40px;"></div>
-	<div style="float:left;width:80px;height:160px;text-align:center;font-size:40px;font-weight:bolder;">&uarr;<br />2</div>
-	<div style="width:159px;height:159px;float:left;border-left:1px solid black;border-top:1px solid black;"></div>
-	
-	<div style="clear:both;"></div>
-
-</div>
+<img src="/img/asst/stoplight.jpg"
+		 style="width:50%; min-width:300px; padding: 10px 0 10px;" class="img-responsive center-block" alt="Stoplight diagram"></img>
 ++++
 
 Given our model of the intersection, your job is to use synchronization
@@ -517,11 +488,21 @@ quadrant until it calls `leaveIntersection`.
 . Your solution should improve traffic flow compared to a conventional
 four-way stop while not starving traffic from any direction.
 
+. Also don't hit the dog!
+
+==== Stoplight code reading questions 
+
 Before you begin coding, consider the following questions:
 
-{% question "intersection locking" %}
+. Assume that Buffalonians are not Buffalonians and obey the law: whoever
+arrives at the intersection first proceeds first. Using the language of
+synchronization primitives describe the way this intersection is controlled.
+In what ways is this method suboptimal?
 
-{% question "deadlocking intersection" %}
+. Now, assume that the Buffalonians are Buffalonians and do not follow the
+convention described above. In what one instance can this four-­‐‑way-­‐‑stop
+intersection produce a deadlock? It is helpful to think of this in terms of
+the model we are using instead of trying to visualize an actual intersection.
 
 We have provided driver code for the stoplight problem in `stoplight.c`. The
 driver forks off a number of cars which approach the intersection from a
@@ -530,3 +511,23 @@ randomly chosen direction and then randomly call one of three routines:
 it passed through any intersection quadrant by calling the `inQuadrant`
 function provided in `synchprobs.c`, and should identify itself when it
 leaves the intersection by calling `leaveIntersection`.
+
+== Grading
+
+We will test five things about your ASST1 submission:
+
+. *Do your locks work?* We will use `sy2` to test this.
+
+. *Do your CVs work?* We will use `sy3` and `sy4` to test this.
+
+. *Do your reader-writer locks work?* We will use `sy5` from our testing
+suite to test this.
+
+. *Does your whale mating solution work?* We will use `sp1` from our testing
+suite to test this.
+
+. *Does your stoplight solution work?* We will use `sp2` from our testing
+suite to test this.
+
+Note that for our testing tools to work you must preserve these menu command
+mappings, so that `sy{2,3,4,5}` and `sp{1,2}` work as expected.

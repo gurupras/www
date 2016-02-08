@@ -3,6 +3,7 @@ var metalsmith = require('metalsmith'),
     filemetadata = require('metalsmith-filemetadata'),
 		branch = require('metalsmith-branch'),
     collections = require('metalsmith-collections'),
+		github = require('./lib/github.js'),
     asciidoc = require('./lib/asciidoc'),
     updated = require('metalsmith-updated'),
 		slides = require('./lib/slides.js'),
@@ -21,6 +22,9 @@ var metalsmith = require('metalsmith'),
     concat = require('metalsmith-concat'),
     highlight = require('./lib/highlight.js'),
 		msif = require('metalsmith-if'),
+		clean_css = require('metalsmith-clean-css'),
+		uglify = require('metalsmith-uglify'),
+		rename = require('metalsmith-rename'),
     beautify = require('metalsmith-beautify'),
     spellcheck = require('metalsmith-spellcheck'),
     formatcheck = require('metalsmith-formatcheck'),
@@ -50,8 +54,12 @@ metalsmith(__dirname)
   .use(drafts())
   .use(filemetadata([
     {pattern: slides_pattern,
-		 metadata: {'slides': true, 'layout': 'slides/slides.adoc'},
-		 preserve: true
+			metadata: {
+				'slides': true,
+				'doGithub': true,
+				'layout': 'slides/slides.adoc'
+			},
+		 	preserve: true
 	 	},
 	]))
 	.use(branch(isSlides)
@@ -60,8 +68,24 @@ metalsmith(__dirname)
 		}))
 	)
   .use(filemetadata([
-    {pattern: asst_pattern, metadata: {'asst': true, 'doSections': true, 'layout': 'assts/asst.hbt'}},
-    {pattern: course_pattern, metadata: {'course': true, 'doSections': true, 'layout': 'courses/course.hbt'}}
+    {pattern: asst_pattern,
+			metadata: {
+				'asst': true,
+				'doSections': true,
+				'doGithub': true,
+				'layout': 'assts/asst.hbt'
+			},
+			preserve: true
+		},
+    {pattern: course_pattern,
+			metadata: {
+				'course': true,
+				'doSections': true,
+				'doGithub': true,
+				'layout': 'courses/course.hbt'
+			},
+			preserve: true
+		}
   ]))
 	.use(branch(isSlides)
 		.use(collections({
@@ -72,6 +96,7 @@ metalsmith(__dirname)
 			}
 		}))
 	)
+	.use(github())
   .use(asciidoc())
   .use(updated({ignoreKeys: ["draft", "working"], filePatterns: ["**/*.html"]}))
 	.use(slides())
@@ -121,7 +146,10 @@ metalsmith(__dirname)
   }))
   .use(highlight())
 	.use(hacks())
-	.use(msif((argv['deploy'] == true), beautify({'indent_size': 2})))
+	.use(msif((argv['deploy'] == true), clean_css({ files: 'css/**/*.css' })))
+	.use(msif((argv['deploy'] == true), uglify()))
+	.use(msif((argv['deploy'] == true), rename([[/\.min\.js$/, ".js"]])))
+	.use(msif((argv['deploy'] == true), beautify({'indent_size': 2, 'css': false, 'js': false})))
 	.use(msif((argv['check'] == true),
   	spellcheck({ dicFile: 'dicts/en_US.dic',
                  affFile: 'dicts/en_US.aff',

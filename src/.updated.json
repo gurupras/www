@@ -1,15 +1,15 @@
 {
     "index.html": {
         "filename": "index.html",
-        "hash": "0b11c1b60a3fee53793819d598318a52",
+        "hash": "0bde90793fc893be9f3d149d43843191",
         "created": "2016-01-28T22:27:30.127Z",
-        "updated": "2016-02-05T17:49:33.904Z"
+        "updated": "2016-02-08T16:56:05.454Z"
     },
     "asst/0.html": {
         "filename": "asst/0.html",
-        "hash": "36ebaf833ba288e11d0bc8575dc362d5",
+        "hash": "01aa1f1a7e180afc22a99cd750d4fbef",
         "created": "2016-01-28T22:27:30.127Z",
-        "updated": "2016-02-05T17:49:33.904Z"
+        "updated": "2016-02-08T16:56:05.454Z"
     },
     "slides/intro.html": {
         "filename": "slides/intro.html",
@@ -25,15 +25,15 @@
     },
     "asst/1.html": {
         "filename": "asst/1.html",
-        "hash": "acd1973c2e0283b06917bdad4fa76259",
+        "hash": "7bf908b264afa73bd25ef07d5d6d8a29",
         "created": "2016-02-05T17:49:33.904Z",
-        "updated": "2016-02-05T18:43:45.350Z"
+        "updated": "2016-02-08T16:56:05.454Z"
     },
     "exams/index.html": {
         "filename": "exams/index.html",
-        "hash": "98e92056b7f4d48e3f58df1256987057",
+        "hash": "0ccc8c06ebf3215bb76c34cfc715b2fd",
         "created": "2016-02-05T17:49:33.904Z",
-        "updated": "2016-02-05T17:49:33.904Z"
+        "updated": "2016-02-08T16:56:05.454Z"
     },
     "slides/forkandfilehandles.html": {
         "filename": "slides/forkandfilehandles.html",
@@ -55,14 +55,20 @@
     },
     "slides/synchprimitives.html": {
         "filename": "slides/synchprimitives.html",
-        "hash": "a92ee271897eaaeff2c96621775e9504",
+        "hash": "0c2abfd7b3f85266b0906706199448bd",
         "created": "2016-02-05T17:49:33.904Z",
-        "updated": "2016-02-05T17:49:33.904Z"
+        "updated": "2016-02-08T16:56:05.454Z"
     },
     "courses/buffalo/CSE421_Spring2016.html": {
         "filename": "courses/buffalo/CSE421_Spring2016.html",
-        "hash": "dda6c713283d60c3093a39466cfbb15c",
+        "hash": "b52487c2e531a9b852872611be647075",
         "created": "2016-02-05T17:49:33.904Z",
-        "updated": "2016-02-05T17:49:33.904Z"
+        "updated": "2016-02-08T16:56:05.454Z"
+    },
+    "slides/synchproblems.html": {
+        "filename": "slides/synchproblems.html",
+        "hash": "20dcdb206d8622f7a34f1737fbebcc7d",
+        "created": "2016-02-08T16:56:05.454Z",
+        "updated": "2016-02-08T16:56:05.454Z"
     }
 }
